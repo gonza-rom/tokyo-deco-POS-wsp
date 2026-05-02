@@ -379,7 +379,7 @@ export default function HomePage() {
               </h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 20, fontSize: 14, color: 'rgba(250,249,247,0.7)', lineHeight: 1.8 }}>
                 <p style={{ margin: 0 }}>
-                  Nació y crecí en Catamarca, una tierra donde la tradición artesanal forma
+                  Crecí en Catamarca, una tierra donde la tradición artesanal forma
                   parte del paisaje cotidiano. Hace 5 años descubrí una conexión especial con
                   los materiales nobles y los procesos hechos a mano.
                 </p>
