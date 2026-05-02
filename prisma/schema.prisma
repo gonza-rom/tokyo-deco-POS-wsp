@@ -1,0 +1,116 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Cliente {
+  id          String      @id @default(cuid())
+  nombre      String
+  email       String      @unique
+  dni         String?
+  telefono    String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  supabaseId  String?     @unique
+  direcciones Direccion[]
+  pedidos     Pedido[]
+
+  @@index([supabaseId])
+}
+
+model Direccion {
+  id           String    @id @default(cuid())
+  clienteId    String
+  calle        String
+  ciudad       String
+  provincia    String?
+  cp           String?
+  principal    Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  departamento String?
+  numero       String?
+  piso         String?
+  updatedAt    DateTime? @default(now()) @db.Timestamp(6)
+  cliente      Cliente   @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+  pedidos      Pedido[]
+
+  @@index([clienteId])
+}
+
+model Pedido {
+  id                String       @id @default(cuid())
+  clienteId         String?
+  direccionId       String?
+  estado            String       @default("PENDIENTE")
+  metodoPago        String?
+  subtotal          Float
+  descuento         Float        @default(0)
+  total             Float
+  observaciones     String?
+  ventaDevhubId     String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  compradorEmail    String?
+  compradorNombre   String?
+  compradorTelefono String?
+  costoEnvio        Float        @default(0)
+  mpPaymentId       String?
+  mpStatus          String?
+  tipoEnvio         String?
+  pagadoAt          DateTime?    @db.Timestamp(6)
+  enviadoAt         DateTime?    @db.Timestamp(6)
+  entregadoAt       DateTime?    @db.Timestamp(6)
+  notasInternas     String?
+
+  // ── OCA ──────────────────────────────────────────────────
+  // Número de envío asignado por OCA (ej: "00123456789")
+  ocaNumeroEnvio    String?
+  // URL firmada de la etiqueta PDF para imprimir
+  ocaEtiquetaUrl    String?
+  // Estado sincronizado desde OCA:
+  // PENDIENTE | EN_CAMINO | EN_SUCURSAL | ENTREGADO | DEVUELTO | SIN_MOVIMIENTO
+  ocaEstado         String?
+  // Fecha en que OCA admitió el paquete
+  ocaFechaDespacho  DateTime?
+  // Fecha de entrega efectiva reportada por OCA
+  ocaFechaEntrega   DateTime?
+  // ID de sucursal OCA de despacho (si es retiro en sucursal)
+  ocaSucursalId     String?
+  // Número de admisión OCA (requerido para algunos endpoints)
+  ocaAdmision       String?
+
+  cliente   Cliente?     @relation(fields: [clienteId], references: [id])
+  direccion Direccion?   @relation(fields: [direccionId], references: [id])
+  items     PedidoItem[]
+
+  @@index([estado])
+  @@index([compradorEmail])
+  @@index([mpPaymentId])
+  @@index([createdAt])
+  @@index([clienteId])
+  @@index([ventaDevhubId])
+  @@index([ocaNumeroEnvio])
+  @@index([ocaEstado])
+}
+
+model PedidoItem {
+  id               String  @id @default(cuid())
+  pedidoId         String
+  productoDevhubId String?
+  varianteDevhubId String?
+  nombre           String
+  cantidad         Int
+  precioUnit       Float
+  subtotal         Float
+  color            String?
+  imagen           String?
+  talle            String?
+  pedido           Pedido  @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+
+  @@index([pedidoId])
+}
