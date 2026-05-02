@@ -80,6 +80,12 @@ export default function Footer() {
           <p className="font-sans text-xs text-crema/30 flex items-center gap-1">
             Hecho con <Heart size={11} className="text-terracota-400 fill-current" /> en Catamarca, Argentina
           </p>
+          <p className="font-sans">
+              Desarrollado por{' '}
+              <a href="https://www.devhub.com.ar/" target="_blank" rel="noopener noreferrer" className="hover:text-jmr-green transition-colors font-sans">
+                DevHub
+              </a>
+          </p>
         </div>
       </div>
     </footer>
