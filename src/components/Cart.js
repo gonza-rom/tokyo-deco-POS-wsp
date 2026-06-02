@@ -4,7 +4,7 @@ import { X, Plus, Minus, Trash2, ShoppingBag, MessageCircle } from 'lucide-react
 import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
 
-const WA_NUMBER = '5493834327903';
+const WA_NUMBER = '5493834540245';
 
 const C = {
   carbon:      '#1a140e',
