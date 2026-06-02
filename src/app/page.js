@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { Instagram, MessageCircle, Mail, Leaf, Scissors, Wind, Star, Package } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
-const WA_NUMBER  = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '5493834327903';
+const WA_NUMBER  = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '5493834540245';
 const INSTAGRAM  = 'tokio_decoar';
 const EMAIL      = 'hola@tokiodeco.com.ar';
 
