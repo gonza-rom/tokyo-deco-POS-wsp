@@ -225,17 +225,6 @@ function HeroSlider({ productos }) {
             Piezas únicas hechas a mano con amor y materiales naturales. Cada objeto lleva la huella de quien lo creó.
           </p>
 
-          {heroSlides[current] && (
-            <div style={{ marginBottom: 32, padding: '16px 20px', borderLeft: '2px solid #d4583a', background: 'rgba(250,249,247,0.06)', backdropFilter: 'blur(4px)' }}>
-              <p style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#b8945a', margin: '0 0 4px' }}>
-                {heroSlides[current].categoria?.nombre ?? 'Destacado'}
-              </p>
-              <p style={{ fontFamily: 'Georgia, serif', fontSize: 20, color: '#faf9f7', margin: 0 }}>
-                {heroSlides[current].nombre}
-              </p>
-            </div>
-          )}
-
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
             <Link
               href="/productos"
@@ -371,17 +360,17 @@ function CategoryCards() {
   );
 }
 
-// ── ProductCarousel — carrusel drag + botones, sin precios ────────────────────
-function ProductCarousel({ productos }) {
-  const [offset, setOffset] = useState(0);
-  const [dragging, setDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
+// ── ImageCarousel — solo imágenes, sin texto ni precio ───────────────────────
+function ImageCarousel({ productos }) {
+  const [offset, setOffset]       = useState(0);
+  const [dragging, setDragging]   = useState(false);
+  const [startX, setStartX]       = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [containerW, setContainerW] = useState(900);
   const wrapRef = useRef(null);
 
-  const CARD_W = 300;
-  const GAP    = 20;
+  const CARD_W = 340;
+  const GAP    = 16;
   const STEP   = CARD_W + GAP;
 
   useEffect(() => {
@@ -394,9 +383,7 @@ function ProductCarousel({ productos }) {
   }, []);
 
   const maxOffset = Math.max(0, productos.length * STEP - containerW + 80);
-
-  const slide = (dir) =>
-    setOffset(prev => Math.max(0, Math.min(maxOffset, prev + dir * STEP)));
+  const slide = (dir) => setOffset(prev => Math.max(0, Math.min(maxOffset, prev + dir * STEP)));
 
   const onMouseDown  = (e) => { setDragging(true); setStartX(e.clientX); };
   const onMouseMove  = (e) => { if (!dragging) return; setDragOffset(e.clientX - startX); };
@@ -407,7 +394,6 @@ function ProductCarousel({ productos }) {
     else if (dragOffset > 60) slide(-1);
     setDragOffset(0);
   };
-
   const onTouchStart = (e) => { setDragging(true); setStartX(e.touches[0].clientX); };
   const onTouchMove  = (e) => { if (!dragging) return; setDragOffset(e.touches[0].clientX - startX); };
   const onTouchEnd   = () => {
@@ -418,70 +404,99 @@ function ProductCarousel({ productos }) {
   };
 
   return (
-    <section style={{ padding: '96px 0', background: '#fdf8f3', overflow: 'hidden' }}>
-      {/* Header estilo editorial con número */}
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px 48px', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24 }}>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: 16 }}>
-          <span style={{ fontFamily: 'Georgia, serif', fontSize: 72, color: '#e8e0d4', lineHeight: 1, userSelect: 'none' }}>02</span>
-          <div>
-            <p style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.3em', color: '#d4583a', margin: '0 0 4px' }}>Lo más buscado</p>
-            <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(28px,4vw,40px)', color: '#1a140e', margin: 0, fontWeight: 400 }}>
-              Piezas Destacadas
-            </h2>
+    <section style={{ padding: '64px 0', background: '#1a140e', overflow: 'hidden' }}>
+      {/* Flechas flotantes */}
+      <div style={{ position: 'relative' }}>
+        <div
+          ref={wrapRef}
+          style={{ overflow: 'hidden', cursor: dragging ? 'grabbing' : 'grab' }}
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMove}
+          onMouseUp={onMouseUp}
+          onMouseLeave={onMouseUp}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
+          <div
+            style={{
+              display: 'flex',
+              gap: GAP,
+              padding: '0 40px',
+              transform: `translateX(${-offset + dragOffset}px)`,
+              transition: dragging ? 'none' : 'transform 0.5s cubic-bezier(0.4,0,0.2,1)',
+              willChange: 'transform',
+              userSelect: 'none',
+            }}
+          >
+            {productos.map(p => {
+              const img = p.imagenes?.[0] ?? p.imagen ?? null;
+              return (
+                <Link
+                  key={p.id}
+                  href={`/productos/${p.id}`}
+                  style={{ flexShrink: 0, width: CARD_W, display: 'block', textDecoration: 'none' }}
+                  draggable={false}
+                >
+                  <div style={{
+                    position: 'relative',
+                    aspectRatio: '3/4',
+                    overflow: 'hidden',
+                    background: '#2a1f16',
+                  }}>
+                    {img ? (
+                      <Image
+                        src={img}
+                        alt={p.nombre}
+                        fill
+                        style={{
+                          objectFit: 'cover',
+                          transition: 'transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94)',
+                          pointerEvents: 'none',
+                        }}
+                        sizes="340px"
+                        onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.06)'}
+                        onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                        draggable={false}
+                      />
+                    ) : (
+                      <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Package size={48} color="#4a3a2a" />
+                      </div>
+                    )}
+                    {p.stock === 0 && (
+                      <div style={{ position: 'absolute', inset: 0, background: 'rgba(26,20,14,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <span style={{ color: 'rgba(250,249,247,0.5)', fontFamily: 'Georgia, serif', fontSize: 14, textTransform: 'uppercase', letterSpacing: '0.15em' }}>Sin stock</span>
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: 8 }}>
+        {/* Flechas sobre el carrusel */}
+        {offset > 0 && (
           <button
             onClick={() => slide(-1)}
-            disabled={offset === 0}
-            style={{ width: 48, height: 48, border: '1px solid #e8e0d4', background: 'transparent', cursor: offset === 0 ? 'default' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: offset === 0 ? 0.3 : 1, transition: 'all 0.2s', color: '#1a140e' }}
-            onMouseEnter={e => { if (offset !== 0) { e.currentTarget.style.background = '#1a140e'; e.currentTarget.style.color = '#faf9f7'; }}}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#1a140e'; }}
+            style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', zIndex: 4, background: 'rgba(26,20,14,0.7)', border: '1px solid rgba(250,249,247,0.15)', color: '#faf9f7', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', backdropFilter: 'blur(4px)', transition: 'all 0.2s' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#d4583a'}
+            onMouseLeave={e => e.currentTarget.style.background = 'rgba(26,20,14,0.7)'}
           >
-            <ChevronLeft size={18} />
+            <ChevronLeft size={20} />
           </button>
+        )}
+        {offset < maxOffset && (
           <button
             onClick={() => slide(1)}
-            disabled={offset >= maxOffset}
-            style={{ width: 48, height: 48, border: '1px solid #e8e0d4', background: 'transparent', cursor: offset >= maxOffset ? 'default' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: offset >= maxOffset ? 0.3 : 1, transition: 'all 0.2s', color: '#1a140e' }}
-            onMouseEnter={e => { if (offset < maxOffset) { e.currentTarget.style.background = '#1a140e'; e.currentTarget.style.color = '#faf9f7'; }}}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#1a140e'; }}
+            style={{ position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)', zIndex: 4, background: 'rgba(26,20,14,0.7)', border: '1px solid rgba(250,249,247,0.15)', color: '#faf9f7', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', backdropFilter: 'blur(4px)', transition: 'all 0.2s' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#d4583a'}
+            onMouseLeave={e => e.currentTarget.style.background = 'rgba(26,20,14,0.7)'}
           >
-            <ChevronRight size={18} />
+            <ChevronRight size={20} />
           </button>
-        </div>
-      </div>
-
-      {/* Track */}
-      <div
-        ref={wrapRef}
-        style={{ overflow: 'hidden', cursor: dragging ? 'grabbing' : 'grab' }}
-        onMouseDown={onMouseDown}
-        onMouseMove={onMouseMove}
-        onMouseUp={onMouseUp}
-        onMouseLeave={onMouseUp}
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-      >
-        <div
-          style={{
-            display: 'flex',
-            gap: GAP,
-            padding: '8px 40px 16px',
-            transform: `translateX(${-offset + dragOffset}px)`,
-            transition: dragging ? 'none' : 'transform 0.5s cubic-bezier(0.4,0,0.2,1)',
-            willChange: 'transform',
-            userSelect: 'none',
-          }}
-        >
-          {productos.map(p => (
-            <div key={p.id} style={{ flexShrink: 0, width: CARD_W }}>
-              <ProductCard producto={p} compact />
-            </div>
-          ))}
-        </div>
+        )}
       </div>
     </section>
   );
@@ -813,7 +828,7 @@ export default function HomePage() {
 
       {/* Carrusel de productos destacados */}
       {!loading && productosConStock.length > 0 && (
-        <ProductCarousel productos={productosConStock} />
+        <ImageCarousel productos={productosConStock} />
       )}
 
       {/* Grid todos los productos */}
