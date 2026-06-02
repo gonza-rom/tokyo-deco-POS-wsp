@@ -56,7 +56,7 @@ export default function NotFound() {
             {[
               { href: '/nosotros',  label: 'Quiénes somos' },
               { href: '/contacto', label: 'Contacto'       },
-              { href: 'https://wa.me/543834927252', label: 'WhatsApp', external: true },
+              { href: 'https://wa.me/543834540245', label: 'WhatsApp', external: true },
               { href: '/productos', label: 'Catálogo completo' },
             ].map(({ href, label, external }) => (
               <Link
