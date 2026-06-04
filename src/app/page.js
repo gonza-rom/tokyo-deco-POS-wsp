@@ -164,7 +164,8 @@ function Hero({ primeraImagen }) {
   return (
     <section style={{ position: 'relative', minHeight: '100svh', display: 'grid', gridTemplateColumns: '1fr 1fr', background: '#120e0a', overflow: 'hidden' }} className="td-hero">
       {/* Lado izquierdo — texto */}
-      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: 'clamp(48px,8vw,96px) clamp(32px,5vw,80px)', position: 'relative', zIndex: 2 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center',// DESPUÉS — suma ~68px del navbar al padding top
+padding: 'clamp(116px,12vw,164px) clamp(32px,5vw,80px) clamp(48px,8vw,96px)', position: 'relative', zIndex: 2 }}>
         <p style={{ opacity: loaded ? 1 : 0, transform: loaded ? 'none' : 'translateY(16px)', transition: 'opacity 0.7s 0.1s, transform 0.7s 0.1s', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.4em', color: '#c24b2e', marginBottom: 28, fontFamily: "'Outfit', sans-serif" }}>
           ✦ Artesanías · Catamarca, Argentina
         </p>
