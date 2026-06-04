@@ -24,36 +24,58 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? 'bg-crema shadow-sm border-b border-arena-200'
-          : 'bg-crema border-b border-arena-300'
-      }`}
+      style={{
+        position: 'fixed',
+        top: 0, left: 0, right: 0,
+        zIndex: 50,
+        background: '#f5f0e8',
+        borderBottom: scrolled
+          ? '1px solid rgba(18,14,10,0.12)'
+          : '1px solid rgba(18,14,10,0.18)',
+        boxShadow: scrolled
+          ? '0 2px 24px rgba(18,14,10,0.07)'
+          : 'none',
+        transition: 'box-shadow 0.4s ease, border-color 0.4s ease',
+        fontFamily: "'Outfit', sans-serif",
+      }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 clamp(16px,3vw,48px)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 68 }}>
 
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 flex-shrink-0">
+          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 12, textDecoration: 'none', flexShrink: 0 }}>
             <Image
               src="/logo-bg.png"
               alt="Tokio Deco"
-              width={42}
-              height={42}
-              className="object-contain"
+              width={38}
+              height={38}
+              style={{ objectFit: 'contain' }}
             />
-            <span className="font-display text-xl lg:text-2xl text-carbon tracking-wide">
-              Tokio <span className="text-terracota-500 italic">Deco</span>
+            <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, color: '#120e0a', fontWeight: 700, letterSpacing: '0.02em', lineHeight: 1 }}>
+              Tokio <em style={{ color: '#c24b2e', fontStyle: 'italic' }}>Deco</em>
             </span>
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav style={{ display: 'flex', alignItems: 'center', gap: 36 }} className="td-nav-desktop">
             {links.map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
-                className="font-sans text-xs tracking-widest uppercase text-carbon/60 hover:text-terracota-500 transition-colors"
+                style={{
+                  fontSize: 10,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.3em',
+                  color: 'rgba(18,14,10,0.55)',
+                  textDecoration: 'none',
+                  fontFamily: "'Outfit', sans-serif",
+                  fontWeight: 500,
+                  transition: 'color 0.2s',
+                  paddingBottom: 2,
+                  borderBottom: '1px solid transparent',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.color = '#c24b2e'; e.currentTarget.style.borderBottomColor = '#c24b2e'; }}
+                onMouseLeave={e => { e.currentTarget.style.color = 'rgba(18,14,10,0.55)'; e.currentTarget.style.borderBottomColor = 'transparent'; }}
               >
                 {l.label}
               </Link>
@@ -61,52 +83,111 @@ export default function Navbar() {
           </nav>
 
           {/* Iconos derecha */}
-          <div className="flex items-center gap-3">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+
+            {/* Instagram — solo desktop */}
             
               href="https://instagram.com/tokio_decoar"
               target="_blank"
               rel="noreferrer"
-              className="hidden md:flex text-carbon/50 hover:text-terracota-500 transition-colors"
+              style={{ color: 'rgba(18,14,10,0.45)', transition: 'color 0.2s', display: 'flex' }}
+              className="td-nav-desktop"
+              onMouseEnter={e => e.currentTarget.style.color = '#c24b2e'}
+              onMouseLeave={e => e.currentTarget.style.color = 'rgba(18,14,10,0.45)'}
             >
               <Instagram size={18} />
             </a>
 
+            {/* Separador vertical */}
+            <div style={{ width: 1, height: 20, background: 'rgba(18,14,10,0.12)' }} className="td-nav-desktop" />
+
             {/* Carrito */}
             <button
               onClick={toggleCart}
-              className="relative text-carbon/60 hover:text-terracota-500 transition-colors"
+              style={{
+                position: 'relative',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '6px 8px',
+                color: 'rgba(18,14,10,0.6)',
+                transition: 'color 0.2s',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+              }}
               aria-label="Carrito"
+              onMouseEnter={e => e.currentTarget.style.color = '#c24b2e'}
+              onMouseLeave={e => e.currentTarget.style.color = 'rgba(18,14,10,0.6)'}
             >
               <ShoppingBag size={20} />
               {totalItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-terracota-500 text-crema text-[10px] font-sans font-bold w-4 h-4 rounded-full flex items-center justify-center leading-none">
+                <span style={{
+                  position: 'absolute',
+                  top: 2, right: 2,
+                  background: '#c24b2e',
+                  color: '#f5f0e8',
+                  fontSize: 9,
+                  fontWeight: 700,
+                  width: 16, height: 16,
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  lineHeight: 1,
+                  fontFamily: "'Outfit', sans-serif",
+                }}>
                   {totalItems > 9 ? '9+' : totalItems}
                 </span>
               )}
             </button>
 
-            {/* Hamburger */}
+            {/* Hamburger — solo mobile */}
             <button
               onClick={() => setOpen(!open)}
-              className="md:hidden text-carbon/60 hover:text-carbon transition-colors"
+              style={{
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                color: 'rgba(18,14,10,0.6)',
+                padding: 4,
+                display: 'flex',
+                transition: 'color 0.2s',
+              }}
+              className="td-nav-mobile"
               aria-label="Menú"
             >
               {open ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
+
         </div>
       </div>
 
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden bg-crema border-t border-arena-200 px-4 pb-6 pt-2 animate-fade-in">
-          <nav className="flex flex-col mt-2">
+        <div style={{
+          background: '#f5f0e8',
+          borderTop: '1px solid rgba(18,14,10,0.1)',
+          padding: '8px 24px 24px',
+        }}>
+          <nav style={{ display: 'flex', flexDirection: 'column' }}>
             {links.map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="font-sans text-xs tracking-widest uppercase text-carbon/60 hover:text-terracota-500 transition-colors py-3 border-b border-arena-100"
+                style={{
+                  fontSize: 10,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.3em',
+                  color: 'rgba(18,14,10,0.6)',
+                  textDecoration: 'none',
+                  padding: '14px 0',
+                  borderBottom: '1px solid rgba(18,14,10,0.08)',
+                  fontFamily: "'Outfit', sans-serif",
+                  fontWeight: 500,
+                }}
               >
                 {l.label}
               </Link>
@@ -114,12 +195,36 @@ export default function Navbar() {
 
             <button
               onClick={() => { toggleCart(); setOpen(false) }}
-              className="flex items-center gap-2 font-sans text-xs tracking-widest uppercase text-carbon/60 hover:text-terracota-500 transition-colors py-3 border-b border-arena-100"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10,
+                background: 'transparent',
+                border: 'none',
+                borderBottom: '1px solid rgba(18,14,10,0.08)',
+                cursor: 'pointer',
+                fontSize: 10,
+                textTransform: 'uppercase',
+                letterSpacing: '0.3em',
+                color: 'rgba(18,14,10,0.6)',
+                padding: '14px 0',
+                fontFamily: "'Outfit', sans-serif",
+                fontWeight: 500,
+                textAlign: 'left',
+              }}
             >
               <ShoppingBag size={14} />
               Carrito
               {totalItems > 0 && (
-                <span className="bg-terracota-500 text-crema text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none">
+                <span style={{
+                  background: '#c24b2e',
+                  color: '#f5f0e8',
+                  fontSize: 9,
+                  fontWeight: 700,
+                  padding: '2px 7px',
+                  borderRadius: 20,
+                  fontFamily: "'Outfit', sans-serif",
+                }}>
                   {totalItems}
                 </span>
               )}
@@ -129,13 +234,28 @@ export default function Navbar() {
               href="https://instagram.com/tokio_decoar"
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-2 font-sans text-xs text-carbon/40 hover:text-terracota-500 mt-4"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+                fontSize: 11,
+                color: 'rgba(18,14,10,0.35)',
+                textDecoration: 'none',
+                marginTop: 20,
+                fontFamily: "'Outfit', sans-serif",
+              }}
             >
               <Instagram size={13} /> @tokio_decoar
             </a>
           </nav>
         </div>
       )}
+
+      {/* CSS para mostrar/ocultar desktop vs mobile */}
+      <style>{`
+        @media (min-width: 768px) { .td-nav-mobile { display: none !important; } }
+        @media (max-width: 767px) { .td-nav-desktop { display: none !important; } }
+      `}</style>
     </header>
   )
 }
