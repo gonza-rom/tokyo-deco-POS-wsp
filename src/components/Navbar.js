@@ -26,8 +26,8 @@ export default function Navbar() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? 'bg-crema/95 backdrop-blur-sm shadow-sm border-b border-arena-200'
-          : 'bg-crema/80 backdrop-blur-sm border-b border-arena-100'
+          ? 'bg-crema shadow-sm border-b border-arena-200'
+          : 'bg-crema border-b border-arena-300'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -53,7 +53,7 @@ export default function Navbar() {
               <Link
                 key={l.href}
                 href={l.href}
-                className="font-sans text-xs tracking-widest uppercase text-carbon/70 hover:text-terracota-500 transition-colors"
+                className="font-sans text-xs tracking-widest uppercase text-carbon/60 hover:text-terracota-500 transition-colors"
               >
                 {l.label}
               </Link>
@@ -62,11 +62,11 @@ export default function Navbar() {
 
           {/* Iconos derecha */}
           <div className="flex items-center gap-3">
-            <a
+            
               href="https://instagram.com/tokio_decoar"
               target="_blank"
               rel="noreferrer"
-              className="hidden md:flex text-carbon/60 hover:text-terracota-500 transition-colors"
+              className="hidden md:flex text-carbon/50 hover:text-terracota-500 transition-colors"
             >
               <Instagram size={18} />
             </a>
@@ -74,7 +74,7 @@ export default function Navbar() {
             {/* Carrito */}
             <button
               onClick={toggleCart}
-              className="relative text-carbon/70 hover:text-terracota-500 transition-colors"
+              className="relative text-carbon/60 hover:text-terracota-500 transition-colors"
               aria-label="Carrito"
             >
               <ShoppingBag size={20} />
@@ -88,7 +88,7 @@ export default function Navbar() {
             {/* Hamburger */}
             <button
               onClick={() => setOpen(!open)}
-              className="md:hidden text-carbon/70 hover:text-carbon transition-colors"
+              className="md:hidden text-carbon/60 hover:text-carbon transition-colors"
               aria-label="Menú"
             >
               {open ? <X size={22} /> : <Menu size={22} />}
@@ -106,7 +106,7 @@ export default function Navbar() {
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="font-sans text-xs tracking-widest uppercase text-carbon/70 hover:text-terracota-500 transition-colors py-3 border-b border-arena-100"
+                className="font-sans text-xs tracking-widest uppercase text-carbon/60 hover:text-terracota-500 transition-colors py-3 border-b border-arena-100"
               >
                 {l.label}
               </Link>
@@ -114,7 +114,7 @@ export default function Navbar() {
 
             <button
               onClick={() => { toggleCart(); setOpen(false) }}
-              className="flex items-center gap-2 font-sans text-xs tracking-widest uppercase text-carbon/70 hover:text-terracota-500 transition-colors py-3 border-b border-arena-100"
+              className="flex items-center gap-2 font-sans text-xs tracking-widest uppercase text-carbon/60 hover:text-terracota-500 transition-colors py-3 border-b border-arena-100"
             >
               <ShoppingBag size={14} />
               Carrito
@@ -125,7 +125,7 @@ export default function Navbar() {
               )}
             </button>
 
-            <a
+            
               href="https://instagram.com/tokio_decoar"
               target="_blank"
               rel="noreferrer"
