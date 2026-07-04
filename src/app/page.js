@@ -253,6 +253,58 @@ padding: 'clamp(116px,12vw,164px) clamp(32px,5vw,80px) clamp(48px,8vw,96px)', po
 }
 
 /* ──────────────────────────────────────────────────────────────
+   PonchoBanner — anuncio Fiesta Nacional e Internacional del Poncho
+────────────────────────────────────────────────────────────── */
+function PonchoBanner() {
+  const [ref, visible] = useInView(0.2);
+  return (
+    <section style={{ padding: 'clamp(36px,5vw,56px) clamp(24px,4vw,48px)', background: '#faf7f2', borderBottom: '1px solid #ede8df' }}>
+      <div
+        ref={ref}
+        className="td-poncho-inner"
+        style={{
+          maxWidth: 1100,
+          margin: '0 auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 'clamp(20px,4vw,48px)',
+          flexWrap: 'wrap',
+          textAlign: 'center',
+          opacity: visible ? 1 : 0,
+          transform: visible ? 'none' : 'translateY(20px)',
+          transition: 'opacity 0.7s, transform 0.7s',
+        }}
+      >
+        <div style={{ position: 'relative', width: 84, height: 84, flexShrink: 0 }}>
+          <Image
+            src="/logoponcho.png"
+            alt="Fiesta Nacional e Internacional del Poncho"
+            fill
+            style={{ objectFit: 'contain' }}
+            sizes="84px"
+          />
+        </div>
+
+        <div style={{ width: 1, height: 48, background: '#ede8df' }} className="td-poncho-divider" />
+
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, maxWidth: 560 }}>
+          <p style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.35em', color: '#c24b2e', margin: 0, fontFamily: "'Outfit', sans-serif" }}>
+            ✦ Nos vemos ahí
+          </p>
+          <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(19px,2.6vw,28px)', color: '#120e0a', margin: 0, fontWeight: 600, lineHeight: 1.25 }}>
+            Nos podés encontrar en la <em style={{ color: '#c24b2e', fontStyle: 'italic' }}>Fiesta Nacional e Internacional del Poncho 2026</em>
+          </h3>
+          <p style={{ fontSize: 12, color: '#a07840', margin: '2px 0 0', textTransform: 'uppercase', letterSpacing: '0.2em', fontFamily: "'Outfit', sans-serif" }}>
+            Catamarca, Argentina
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────
    MarqueeStrip
 ────────────────────────────────────────────────────────────── */
 function MarqueeStrip() {
@@ -717,6 +769,11 @@ export default function HomePage() {
           .td-hero > div:last-child { min-height: 320px; }
         }
 
+        /* Poncho banner responsive */
+        @media (max-width: 560px) {
+          .td-poncho-divider { display: none; }
+        }
+
         /* Categorías bento responsive */
         @media (max-width: 900px) {
           .td-cat-grid { grid-template-columns: 1fr 1fr !important; }
@@ -819,6 +876,8 @@ export default function HomePage() {
       ) : (
         <Hero primeraImagen={primeraImagen} />
       )}
+
+      <PonchoBanner />
 
       <MarqueeStrip />
       <CategoryCards />
