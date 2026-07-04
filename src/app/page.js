@@ -278,7 +278,7 @@ function PonchoBanner() {
       >
         <div style={{ position: 'relative', width: 84, height: 84, flexShrink: 0 }}>
           <Image
-            src="/logoponcho.PNG"
+            src="/fiesta-poncho-logo.png"
             alt="Fiesta Nacional e Internacional del Poncho"
             fill
             style={{ objectFit: 'contain' }}
