@@ -717,11 +717,6 @@ export default function HomePage() {
           .td-hero > div:last-child { min-height: 320px; }
         }
 
-        /* Poncho banner responsive */
-        @media (max-width: 560px) {
-          .td-poncho-divider { display: none; }
-        }
-
         /* Categorías bento responsive */
         @media (max-width: 900px) {
           .td-cat-grid { grid-template-columns: 1fr 1fr !important; }
@@ -825,7 +820,6 @@ export default function HomePage() {
         <Hero primeraImagen={primeraImagen} />
       )}
 
-  
       <MarqueeStrip />
       <CategoryCards />
       {!loading && productosConStock.length > 0 && <FeaturedProducts productos={productosConStock} />}
