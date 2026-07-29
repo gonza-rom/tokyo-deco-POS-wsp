@@ -825,8 +825,7 @@ export default function HomePage() {
         <Hero primeraImagen={primeraImagen} />
       )}
 
-      <PonchoBanner />
-
+  
       <MarqueeStrip />
       <CategoryCards />
       {!loading && productosConStock.length > 0 && <FeaturedProducts productos={productosConStock} />}
